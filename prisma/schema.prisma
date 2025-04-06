@@ -1,0 +1,93 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String   @id @default(uuid())
+  firstName    String
+  lastName    String
+  phone    String   @unique
+  password String
+  receipts Receipt[]
+  isAdmin  Boolean @default(false)
+}
+
+model Merchant {
+  id         String   @id @default(uuid())
+  tinNumber  String    @unique
+  receipts   Receipt[]
+  createdAt  DateTime  @default(now())
+}
+
+model Receipt {
+  id         String   @id @default(uuid())
+
+  userId     String?
+  user       User?     @relation(fields: [userId], references: [id])
+  telegramUserId String?  // <- new optional FK
+  telegramUser   TelegramUser? @relation(fields: [telegramUserId], references: [id])
+
+  merchantId String
+  merchant   Merchant @relation(fields: [merchantId], references: [id])
+  tinNumber   String
+  fsNumber   String
+  date       DateTime
+  totalAmount Decimal
+  ercaNumber String
+  uniqueCode String   @unique
+  imageUrl   String
+  extractedText  String
+  activated  Boolean  @default(false)
+  activatedAt   DateTime @default(now())
+  activation Activation?
+  createdAt  DateTime @default(now())
+
+  Draw Draw[] @relation(name: "DrawReceipts")
+  Winner Winner[]
+}
+
+model Activation {
+  id         String   @id @default(uuid())
+  receiptId  String   @unique
+  receipt    Receipt  @relation(fields: [receiptId], references: [id])
+  activatedAt DateTime @default(now())
+}
+
+model Draw {
+  id          String    @id @default(uuid())
+  drawDate    DateTime  @unique
+  activatedReceipts Receipt[] @relation(name: "DrawReceipts")
+  winner     Winner[]
+  createdAt   DateTime  @default(now())
+}
+
+model Winner {
+  id        String  @id @default(uuid())
+  drawId    String
+  draw      Draw    @relation(fields: [drawId], references: [id])
+  receiptId String  @unique
+  receipt   Receipt @relation(fields: [receiptId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model ReceiptsFromSMS {
+  id        String @id @default(uuid())
+  tinNumber String
+  fsNumber  String
+  phone     String
+  createdAt DateTime @default(now())
+}
+
+model TelegramUser {
+  id          String  @id @default(uuid())
+  telegramId  String  @unique
+  phoneNumber String? @unique
+  createdAt   DateTime @default(now())
+
+  Receipt Receipt[]
+}
