@@ -81,7 +81,7 @@ export const handlePhoto = async (bot, msg) => {
             formData.append("telegramUserId", telegramId); // Include user ID to track the sender
 
             try {
-                const uploadResponse = await axios.post("http://localhost:5000/receipts/telegram/upload", formData, {
+                const uploadResponse = await axios.post(`${process.env.API_URL}/receipts/telegram/upload`, formData, {
                     headers: formData.getHeaders(),
                 });
 
@@ -101,8 +101,8 @@ export const handlePhoto = async (bot, msg) => {
                 }
             } catch (error) {
                 console.log({error})
-                // bot.sendMessage(msg.chat.id, `❌ Error ${JSON.stringify(error?.response?.data?.message)}`);
-                bot.sendMessage(msg.chat.id, "❌ Error uploading your receipt.");
+                bot.sendMessage(msg.chat.id, `❌ Error ${JSON.stringify(error.response.data.message)}`);
+                // bot.sendMessage(msg.chat.id, "❌ Error uploading your receipt.");
             }
 
             // Clean up the temporary file
