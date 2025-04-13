@@ -202,7 +202,7 @@ export const loginUser = async (req, res) => {
       httpOnly: true,  // Makes the cookie inaccessible to JavaScript
       secure: process.env.NODE_ENV === "production", // Only set the cookie over HTTPS in production
       maxAge: 7 * 24 * 60 * 60 * 1000,  // Cookie expiration time (7 days)
-      sameSite: process.env.NODE_ENV === "production" ? "Strict" : "Lax",  // Helps mitigate CSRF attacks
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",  // Helps mitigate CSRF attacks
     });
 
     res.json({ message: "Login successful" });
