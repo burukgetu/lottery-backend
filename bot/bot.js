@@ -10,7 +10,7 @@ const WEBHOOK_URL = process.env.WEBHOOK_URL || "";
 const bot = new TelegramBot(BOT_TOKEN, WEBHOOK_URL ? { webHook: true } : { polling: true });
 
 if (WEBHOOK_URL) {
-  bot.setWebHook(`${WEBHOOK_URL}/bot`);
+  // bot.setWebHook(`${WEBHOOK_URL}/bot`);
   console.log("🚀 Bot running with Webhook");
 } else {
   console.log("🤖 Bot running with Polling");
