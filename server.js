@@ -44,7 +44,7 @@ const authLimiter = rateLimit({
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // Vite dev server
+    origin: process.env.CORS_URL, // Vite dev server
     credentials: true, // Allow cookies to be sent
   })
 );
