@@ -7,13 +7,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  user
+  admin
+}
+
 model User {
   id       String   @id @default(uuid())
   firstName    String
   lastName    String
   phone    String   @unique
   password String
+  isVerified Boolean  @default(true)
   receipts Receipt[]
+  role       Role      @default(user)
   isAdmin  Boolean @default(false)
 }
 
@@ -90,4 +97,15 @@ model TelegramUser {
   createdAt   DateTime @default(now())
 
   Receipt Receipt[]
+}
+
+model OtpRequest {
+  id           String   @id @default(uuid())
+  phone        String   @unique
+  firstName    String
+  lastName     String
+  password     String
+  otp          String
+  otpExpiresAt DateTime
+  createdAt    DateTime @default(now())
 }
