@@ -101,8 +101,8 @@ export const handlePhoto = async (bot, msg) => {
                 }
             } catch (error) {
                 console.log({error})
-                bot.sendMessage(msg.chat.id, `❌ Error ${JSON.stringify(error.response.data.message)}`);
-                // bot.sendMessage(msg.chat.id, "❌ Error uploading your receipt.");
+                // bot.sendMessage(msg.chat.id, `❌ Error ${JSON.stringify(error?.response?.data?.message)}`);
+                bot.sendMessage(msg.chat.id, "❌ Error uploading your receipt.");
             }
 
             // Clean up the temporary file
