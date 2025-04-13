@@ -141,13 +141,13 @@ async function uploadReceipt(req, res) {
       return res.status(400).json({ message: "No image uploaded" });
     }
 
-    // let text;
+    let text;
     
-    // if ( process.env.EXTRACT_TYPE === 'node') {
-      const text = await extractTextByTesseract(imagePath);
-    // } else {
-    //   text = await extractTextFromImage(imagePath);
-    // }
+    if ( process.env.EXTRACT_TYPE === 'node') {
+      text = await extractTextByTesseract(imagePath);
+    } else {
+      text = await extractTextFromImage(imagePath);
+    }
     // fs.unlinkSync(imagePath);
     console.log({text});
     // res.json({ message: "extracted text", text});
@@ -293,8 +293,13 @@ async function uploadTelegramReceipt(req, res) {
       return res.status(400).json({ message: "No image uploaded" });
     }
 
-    // const text = await extractTextByTesseract(imagePath);
-    const text = await extractTextFromImage(imagePath);
+    let text;
+    
+    if ( process.env.EXTRACT_TYPE === 'node') {
+      text = await extractTextByTesseract(imagePath);
+    } else {
+      text = await extractTextFromImage(imagePath);
+    }
 
     // fs.unlinkSync(imagePath);
     console.log({text});
