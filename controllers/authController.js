@@ -76,29 +76,28 @@ export const verifyOtp = async (req, res) => {
     await prisma.otpRequest.delete({ where: { phone } });
 
     // 🔐 Create JWT payload
-    const tokenPayload = {
-      id: newUser.id,
-      name: `${newUser.firstName} ${newUser.lastName}`,
-      role: newUser.role,
-    };
+    // const tokenPayload = {
+    //   id: newUser.id,
+    //   name: `${newUser.firstName} ${newUser.lastName}`,
+    //   role: newUser.role,
+    // };
 
-    const token = jwt.sign(tokenPayload, JWT_SECRET, { expiresIn: '1d' });
+    // const token = jwt.sign(tokenPayload, process.env.JWT_SECRET, { expiresIn: '7d' });
 
     // 🍪 Set HTTP-only cookie
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'Strict',
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
-    });
+    // res.cookie('token', token, {
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === 'production',
+    //   sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+    //   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 day
+    // });
 
     // ✅ Respond with user name and role (safe info only)
-    res.status(201).json({
-      message: 'User created and verified',
-      user: {
-        name: `${newUser.firstName} ${newUser.lastName}`,
-        role: newUser.role,
-      },
+    res.status(201).json({ message: 'User created and verified',
+      // user: {
+      //   name: `${newUser.firstName} ${newUser.lastName}`,
+      //   role: newUser.role,
+      // },
     });
     
     // res.status(201).json({ message: 'User created and verified', user: newUser });
